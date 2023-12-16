@@ -1,3 +1,5 @@
+// DatabaseHelper.kt
+
 package com.example.shopping_list_gavle
 
 import android.content.Context
