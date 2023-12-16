@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_main.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Input-fält och knapp för att lägga till nya varor -->
+    <EditText
+        android:id="@+id/etItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/item_name" />
+
+    <Spinner
+        android:id="@+id/spCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnAddItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_item" />
+
+    <!-- RecyclerView för att visa aktuella varor -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvItems"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Knappar för att visa borttagna och köpta varor -->
+    <Button
+        android:id="@+id/btnShowDeletedItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_deleted_items" />
+
+    <Button
+        android:id="@+id/btnShowPurchasedItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_purchased_items" />
+
+    <!-- RecyclerViews för att visa borttagna och köpta varor -->
+    <!-- Dessa kan vara dolda eller visas i separata aktiviteter eller fragment beroende på ditt användargränssnittsdesign -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDeletedItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" /> <!-- Exempel: dold tills användaren klickar på 'btnShowDeletedItems' -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPurchasedItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" /> <!-- Exempel: dold tills användaren klickar på 'btnShowPurchasedItems' -->
+
+</LinearLayout>

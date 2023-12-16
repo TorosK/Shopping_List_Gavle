@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Shopping_List_Gavle</string>
+    <string name="app_name">Shopping List Gävle</string>
+    <string name="item_name">Ange vara</string>
+    <string name="add_item">Lägg till vara</string>
+    <string name="show_deleted_items">Visa borttagna varor</string>
+    <string name="show_purchased_items">Visa köpta varor</string>
 </resources>
