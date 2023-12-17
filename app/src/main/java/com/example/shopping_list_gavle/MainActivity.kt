@@ -9,10 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     private lateinit var itemsAdapter: ItemsAdapter
     private lateinit var dbHelper: DatabaseHelper
+
+    fun getCurrentDateTime(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +46,13 @@ class MainActivity : AppCompatActivity() {
             val itemName = etItemName.text.toString().trim()
             if(itemName.isNotEmpty()) {
                 val category = spCategory.selectedItem.toString()
-                val item = Item(0, itemName, category)
+
+                // Assume you want to add the current date and time when the item is added
+                val currentDateTime = getCurrentDateTime() // You need to implement this method
+
+                // Now, pass the currentDateTime as the datetimeAdded parameter
+                val item = Item(0, itemName, category, currentDateTime)
+
                 val itemId = dbHelper.addItem(item)
                 if (itemId > -1) {
                     itemsAdapter.addItem(item.copy(id = itemId.toInt()))
