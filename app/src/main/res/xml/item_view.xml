@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- item_view.xml -->
+<!-- AndroidStudioProjects\Shopping_List_Gavle\app\src\main\res\xml\item_view.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

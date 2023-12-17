@@ -1,4 +1,4 @@
-// MainActivity.kt
+// AndroidStudioProjects\Shopping_List_Gavle\app\src\main\java\com\example\shopping_list_gavle\MainActivity.kt
 
 package com.example.shopping_list_gavle
 
