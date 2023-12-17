@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
+    var onItemClick: ((Item) -> Unit)? = null
+
     // ViewHolder för varje vara i listan
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.tvItemName)
@@ -29,7 +31,9 @@ class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAd
         val item = items[position]
         holder.nameTextView.text = item.name
         holder.categoryTextView.text = item.category
-        // Hantera klick för varje vara här om nödvändigt
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(item)
+        }
     }
 
     // Returnerar storleken på din dataset (invoked by the layout manager)
