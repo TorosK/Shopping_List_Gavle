@@ -104,7 +104,7 @@ class DatabaseHelper(context: Context) :
     fun getAllItems(): List<Item> {
         val itemList = mutableListOf<Item>()
         val db = readableDatabase
-        val cursor = db.query(TABLE_ITEMS, arrayOf("id", "name", "category"), null, null, null, null, "datetime_added DESC")
+        val cursor = db.query(TABLE_ITEMS, arrayOf("id", "name", "category", "datetime_added"), null, null, null, null, "datetime_added DESC")
         if (cursor.moveToFirst()) {
             do {
                 val item = Item(
