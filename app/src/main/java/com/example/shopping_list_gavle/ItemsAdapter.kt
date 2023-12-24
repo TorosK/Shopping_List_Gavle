@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter(private var items: MutableList<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
     var onItemClick: ((Item) -> Unit)? = null
 
@@ -42,19 +42,28 @@ class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAd
 
     // Metod för att lägga till varor i listan
     fun addItem(item: Item) {
-        items = items + item
+        items.add(item) // Lägg till item i listan
         notifyItemInserted(items.size - 1)
     }
 
-    // Metod för att visa borttagna varor (du måste implementera logiken)
+    // Metod för att visa borttagna varor
     fun showDeletedItems(deletedItems: List<DeletedItem>) {
-        items = deletedItems.map { it.toItem() } // Convert DeletedItem to Item if necessary
-        notifyDataSetChanged() // Refresh the RecyclerView
+        items.clear() // Rensa befintliga varor
+        items.addAll(deletedItems.map { it.toItem() }) // Lägg till nya varor
+        notifyDataSetChanged() // Meddela att datan har ändrats
     }
 
-    // Metod för att visa köpta varor (du måste implementera logiken)
+    // Metod för att visa köpta varor
     fun showPurchasedItems(purchasedItems: List<PurchasedItem>) {
-        items = purchasedItems.map { it.toItem() } // Convert PurchasedItem to Item if necessary
-        notifyDataSetChanged() // Refresh the RecyclerView
+        items.clear() // Rensa befintliga varor
+        items.addAll(purchasedItems.map { it.toItem() }) // Lägg till nya varor
+        notifyDataSetChanged() // Meddela att datan har ändrats
+    }
+
+    // Metod för att uppdatera listan med varor
+    fun setItems(newItems: List<Item>) {
+        items.clear()           // Rensa befintliga varor
+        items.addAll(newItems)  // Lägg till nya varor
+        notifyDataSetChanged()  // Meddela att datan har ändrats
     }
 }

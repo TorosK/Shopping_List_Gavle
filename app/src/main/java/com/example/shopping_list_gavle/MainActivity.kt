@@ -58,17 +58,14 @@ class MainActivity : AppCompatActivity() {
             val itemName = etItemName.text.toString().trim()
             if(itemName.isNotEmpty()) {
                 val category = spCategory.selectedItem.toString()
-
-                // Assume you want to add the current date and time when the item is added
-                val currentDateTime = getCurrentDateTime() // You need to implement this method
-
-                // Now, pass the currentDateTime as the datetimeAdded parameter
+                val currentDateTime = getCurrentDateTime()
                 val item = Item(0, itemName, category, currentDateTime)
 
                 val itemId = dbHelper.addItem(item)
                 if (itemId > -1) {
                     Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show()
-                    // Update RecyclerView
+                    // Update RecyclerView with the latest items
+                    updateRecyclerView()
                 } else {
                     Toast.makeText(this, "Error adding item", Toast.LENGTH_SHORT).show()
                 }
@@ -79,16 +76,18 @@ class MainActivity : AppCompatActivity() {
 
         // Visa borttagna varor
         btnShowDeletedItems.setOnClickListener {
-            // Antag att du har en metod i din adapter för att visa borttagna varor
             val deletedItems = dbHelper.getDeletedItems()
-            itemsAdapter.showDeletedItems(deletedItems) // Pseudokod - implementera denna metod
+            // Antag att vi har en metod i DeletedItem för att konvertera till Item
+            val itemsList = deletedItems.map { it.toItem() }
+            itemsAdapter.setItems(itemsList) // Skicka en lista av Item-objekt
         }
 
         // Visa köpta varor
         btnShowPurchasedItems.setOnClickListener {
-            // Antag att du har en metod i din adapter för att visa köpta varor
             val purchasedItems = dbHelper.getPurchasedItems()
-            itemsAdapter.showPurchasedItems(purchasedItems) // Pseudokod - implementera denna metod
+            // Antag att vi har en metod i PurchasedItem för att konvertera till Item
+            val itemsList = purchasedItems.map { it.toItem() }
+            itemsAdapter.setItems(itemsList) // Skicka en lista av Item-objekt
         }
 
         etItemName.addTextChangedListener(object : TextWatcher {
@@ -105,4 +104,11 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    // Method to update RecyclerView with the latest items
+    private fun updateRecyclerView() {
+        val currentItems = dbHelper.getAllItems() // Hämta aktuella varor från databasen
+        itemsAdapter.setItems(currentItems) // Antag att setItems är en metod i ItemsAdapter
+    }
+
 }
