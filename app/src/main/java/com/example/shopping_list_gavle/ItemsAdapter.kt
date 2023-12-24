@@ -46,14 +46,6 @@ class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAd
         notifyItemInserted(items.size - 1)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        if (oldVersion < 2) {
-            // Example: Add a new column to the items table
-            db.execSQL("ALTER TABLE $TABLE_ITEMS ADD COLUMN new_column TEXT")
-        }
-        // Handle other version upgrades
-    }
-
     // Metod för att visa borttagna varor (du måste implementera logiken)
     fun showDeletedItems(deletedItems: List<DeletedItem>) {
         items = deletedItems.map { it.toItem() } // Convert DeletedItem to Item if necessary

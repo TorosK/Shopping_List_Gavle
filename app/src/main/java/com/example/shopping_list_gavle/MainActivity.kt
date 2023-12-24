@@ -92,11 +92,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         etItemName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                btnAddItem.isEnabled = s.toString().trim().isNotEmpty()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed here for your use case
             }
 
-            // Implement other required methods of TextWatcher
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No action needed here for your use case
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                btnAddItem.isEnabled = s.toString().trim().isNotEmpty()
+            }
         })
     }
 }

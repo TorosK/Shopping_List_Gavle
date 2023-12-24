@@ -1,4 +1,4 @@
-// DatabaseHelper.kt
+// AndroidStudioProjects\Shopping_List_Gavle\app\src\main\java\com\example\shopping_list_gavle\DatabaseHelper.kt
 
 package com.example.shopping_list_gavle
 
@@ -51,8 +51,11 @@ class DatabaseHelper(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Här kan du hantera uppdateringar av databasens schema
-        // T.ex. droppa gamla tabeller och skapa nya
+        if (oldVersion < 2) {
+            // Example: Add a new column to the items table
+            db.execSQL("ALTER TABLE $TABLE_ITEMS ADD COLUMN new_column TEXT")
+        }
+        // Handle other version upgrades
     }
 
     // CRUD-metoder nedan
