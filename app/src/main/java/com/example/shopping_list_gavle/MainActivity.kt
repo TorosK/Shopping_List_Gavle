@@ -3,12 +3,16 @@
 package com.example.shopping_list_gavle
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Date
@@ -36,6 +40,14 @@ class MainActivity : AppCompatActivity() {
         val btnShowDeletedItems = findViewById<Button>(R.id.btnShowDeletedItems)
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
 
+        // Example categories - modify as needed
+        val categories = arrayOf("Food", "Clothing", "Electronics")
+
+        // In onCreate of MainActivity
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spCategory.adapter = spinnerAdapter
+
         // Setup RecyclerView för varor
         itemsAdapter = ItemsAdapter(mutableListOf()) // Pseudokod - implementera ItemsAdapter
         rvItems.adapter = itemsAdapter
@@ -55,10 +67,10 @@ class MainActivity : AppCompatActivity() {
 
                 val itemId = dbHelper.addItem(item)
                 if (itemId > -1) {
-                    itemsAdapter.addItem(item.copy(id = itemId.toInt()))
-                    etItemName.text.clear()
+                    Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show()
+                    // Update RecyclerView
                 } else {
-                    // Hantera fel här
+                    Toast.makeText(this, "Error adding item", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 etItemName.error = "Varans namn kan inte vara tomt"
@@ -78,5 +90,13 @@ class MainActivity : AppCompatActivity() {
             val purchasedItems = dbHelper.getPurchasedItems()
             itemsAdapter.showPurchasedItems(purchasedItems) // Pseudokod - implementera denna metod
         }
+
+        etItemName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                btnAddItem.isEnabled = s.toString().trim().isNotEmpty()
+            }
+
+            // Implement other required methods of TextWatcher
+        })
     }
 }

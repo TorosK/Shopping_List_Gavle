@@ -58,14 +58,20 @@ class DatabaseHelper(context: Context) :
     // CRUD-metoder nedan
 
     fun addItem(item: Item): Long {
-        val db = writableDatabase
-        val values = ContentValues()
-        values.put("name", item.name)
-        values.put("category", item.category)
-        // datetime_added sätts automatiskt till nuvarande tidsstämpel
-        val id = db.insert(TABLE_ITEMS, null, values)
-        db.close()
-        return id
+        return try {
+            val db = writableDatabase
+            val values = ContentValues().apply {
+                put("name", item.name)
+                put("category", item.category)
+                // datetime_added sätts automatiskt till nuvarande tidsstämpel
+                // Add other fields
+            }
+            val id = db.insert(TABLE_ITEMS, null, values)
+            db.close()
+            id
+        } catch (e: Exception) {
+            -1 // Indicate failure
+        }
     }
 
     fun deleteItem(itemId: Int) {

@@ -2,6 +2,7 @@
 
 package com.example.shopping_list_gavle
 
+import android.database.sqlite.SQLiteDatabase
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,13 +46,23 @@ class ItemsAdapter(private var items: List<Item>) : RecyclerView.Adapter<ItemsAd
         notifyItemInserted(items.size - 1)
     }
 
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) {
+            // Example: Add a new column to the items table
+            db.execSQL("ALTER TABLE $TABLE_ITEMS ADD COLUMN new_column TEXT")
+        }
+        // Handle other version upgrades
+    }
+
     // Metod för att visa borttagna varor (du måste implementera logiken)
     fun showDeletedItems(deletedItems: List<DeletedItem>) {
-        // Pseudokod - ersätt items med deletedItems och uppdatera adaptern
+        items = deletedItems.map { it.toItem() } // Convert DeletedItem to Item if necessary
+        notifyDataSetChanged() // Refresh the RecyclerView
     }
 
     // Metod för att visa köpta varor (du måste implementera logiken)
     fun showPurchasedItems(purchasedItems: List<PurchasedItem>) {
-        // Pseudokod - ersätt items med purchasedItems och uppdatera adaptern
+        items = purchasedItems.map { it.toItem() } // Convert PurchasedItem to Item if necessary
+        notifyDataSetChanged() // Refresh the RecyclerView
     }
 }
