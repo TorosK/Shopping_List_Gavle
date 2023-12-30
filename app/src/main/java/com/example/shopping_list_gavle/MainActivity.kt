@@ -30,29 +30,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Initialize DatabaseHelper
         dbHelper = DatabaseHelper(this)
 
         // UI-komponenter
-        val rvItems = findViewById<RecyclerView>(R.id.rvItems)
         val etItemName = findViewById<EditText>(R.id.etItemName)
         val spCategory = findViewById<Spinner>(R.id.spCategory)
-        val btnAddItem = findViewById<Button>(R.id.btnAddItem)
         val btnShowDeletedItems = findViewById<Button>(R.id.btnShowDeletedItems)
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
 
         // Example categories - modify as needed
         val categories = arrayOf("Food", "Clothing", "Electronics")
 
-        // In onCreate of MainActivity
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spCategory.adapter = spinnerAdapter
-
-        // Setup RecyclerView för varor
-        itemsAdapter = ItemsAdapter(mutableListOf()) // Pseudokod - implementera ItemsAdapter
-        rvItems.adapter = itemsAdapter
+        // Setup RecyclerView and Adapter
+        val rvItems = findViewById<RecyclerView>(R.id.rvItems)
         rvItems.layoutManager = LinearLayoutManager(this)
+        rvItems.adapter = itemsAdapter
 
+        // Setup Add Item Button
+        val btnAddItem = findViewById<Button>(R.id.btnAddItem)
         // Lägg till en vara
         btnAddItem.setOnClickListener {
             val itemName = etItemName.text.toString().trim()
@@ -73,6 +69,16 @@ class MainActivity : AppCompatActivity() {
                 etItemName.error = "Varans namn kan inte vara tomt"
             }
         }
+
+        // In onCreate of MainActivity
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spCategory.adapter = spinnerAdapter
+
+        // Initialize the RecyclerView adapter without passing a list
+        itemsAdapter = ItemsAdapter()
+        rvItems.adapter = itemsAdapter
+        rvItems.layoutManager = LinearLayoutManager(this)
 
         // Visa borttagna varor
         btnShowDeletedItems.setOnClickListener {

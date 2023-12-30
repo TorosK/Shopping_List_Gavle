@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemsAdapter(private var items: MutableList<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+    private val items = mutableListOf<Item>()
 
     var onItemClick: ((Item) -> Unit)? = null
 

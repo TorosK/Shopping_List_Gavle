@@ -8,11 +8,11 @@
     android:padding="16dp">
 
     <!-- Input-fält och knapp för att lägga till nya varor -->
+    <!-- EditText for Item Name -->
     <EditText
         android:id="@+id/etItemName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:hint="@string/item_name" />
 
     <Spinner
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/add_item" />
 
-    <!-- RecyclerView för att visa aktuella varor -->
+    <!-- RecyclerView for displaying current items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"

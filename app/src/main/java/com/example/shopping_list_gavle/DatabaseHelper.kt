@@ -67,7 +67,7 @@ class DatabaseHelper(context: Context) :
                 put("name", item.name)
                 put("category", item.category)
                 // datetime_added sätts automatiskt till nuvarande tidsstämpel
-                // Add other fields
+                // Add other fields ?
             }
             val id = db.insert(TABLE_ITEMS, null, values)
             db.close()
