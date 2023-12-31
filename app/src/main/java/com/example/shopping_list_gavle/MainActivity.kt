@@ -33,6 +33,14 @@ class MainActivity : AppCompatActivity() {
         // Initialize DatabaseHelper
         dbHelper = DatabaseHelper(this)
 
+        // Initialize the RecyclerView adapter
+        itemsAdapter = ItemsAdapter()
+
+        // Setup RecyclerView and Adapter
+        val rvItems = findViewById<RecyclerView>(R.id.rvItems)
+        rvItems.layoutManager = LinearLayoutManager(this)
+        rvItems.adapter = itemsAdapter
+
         // UI-komponenter
         val etItemName = findViewById<EditText>(R.id.etItemName)
         val spCategory = findViewById<Spinner>(R.id.spCategory)
@@ -41,11 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         // Example categories - modify as needed
         val categories = arrayOf("Food", "Clothing", "Electronics")
-
-        // Setup RecyclerView and Adapter
-        val rvItems = findViewById<RecyclerView>(R.id.rvItems)
-        rvItems.layoutManager = LinearLayoutManager(this)
-        rvItems.adapter = itemsAdapter
 
         // Setup Add Item Button
         val btnAddItem = findViewById<Button>(R.id.btnAddItem)
@@ -74,11 +77,6 @@ class MainActivity : AppCompatActivity() {
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCategory.adapter = spinnerAdapter
-
-        // Initialize the RecyclerView adapter without passing a list
-        itemsAdapter = ItemsAdapter()
-        rvItems.adapter = itemsAdapter
-        rvItems.layoutManager = LinearLayoutManager(this)
 
         // Visa borttagna varor
         btnShowDeletedItems.setOnClickListener {
