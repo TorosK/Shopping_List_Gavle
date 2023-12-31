@@ -1,4 +1,5 @@
-// AndroidStudioProjects\Shopping_List_Gavle\app\src\main\java\com\example\shopping_list_gavle\MainActivity.kt
+// AndroidStudioProjects\Shopping_List_Gavle\app\src\main\java\com\example\shopping_list_gavle
+// \MainActivity.kt
 
 package com.example.shopping_list_gavle
 
@@ -20,6 +21,9 @@ import java.util.Date
 class MainActivity : AppCompatActivity() {
     private lateinit var itemsAdapter: ItemsAdapter
     private lateinit var dbHelper: DatabaseHelper
+
+    private var showingDeletedItems = false
+    private var showingPurchasedItems = false
 
     fun getCurrentDateTime(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -77,25 +81,48 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // In onCreate of MainActivity
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCategory.adapter = spinnerAdapter
 
-        // Visa borttagna varor
+        // Show Deleted Items Button
         btnShowDeletedItems.setOnClickListener {
-            val deletedItems = dbHelper.getDeletedItems()
-            // Antag att vi har en metod i DeletedItem för att konvertera till Item
-            val itemsList = deletedItems.map { it.toItem() }
-            itemsAdapter.setItems(itemsList) // Skicka en lista av Item-objekt
+            if (showingDeletedItems) {
+                // If already showing deleted items, switch back to the default list
+                updateRecyclerView()
+                showingDeletedItems = false
+                btnShowDeletedItems.setBackgroundResource(android.R.drawable.btn_default) // Reset button appearance
+            } else {
+                // Show deleted items
+                val deletedItems = dbHelper.getDeletedItems()
+                val itemsList = deletedItems.map { it.toItem() }
+                itemsAdapter.setItems(itemsList)
+                showingDeletedItems = true
+                btnShowDeletedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
+                // Reset the other button's state
+                showingPurchasedItems = false
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.btn_default)
+            }
         }
 
-        // Visa köpta varor
+        // Show Purchased Items Button
         btnShowPurchasedItems.setOnClickListener {
-            val purchasedItems = dbHelper.getPurchasedItems()
-            // Antag att vi har en metod i PurchasedItem för att konvertera till Item
-            val itemsList = purchasedItems.map { it.toItem() }
-            itemsAdapter.setItems(itemsList) // Skicka en lista av Item-objekt
+            if (showingPurchasedItems) {
+                // If already showing purchased items, switch back to the default list
+                updateRecyclerView()
+                showingPurchasedItems = false
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.btn_default) // Reset button appearance
+            } else {
+                // Show purchased items
+                val purchasedItems = dbHelper.getPurchasedItems()
+                val itemsList = purchasedItems.map { it.toItem() }
+                itemsAdapter.setItems(itemsList)
+                showingPurchasedItems = true
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
+                // Reset the other button's state
+                showingDeletedItems = false
+                btnShowDeletedItems.setBackgroundResource(android.R.drawable.btn_default)
+            }
         }
 
         etItemName.addTextChangedListener(object : TextWatcher {
@@ -118,5 +145,4 @@ class MainActivity : AppCompatActivity() {
         val currentItems = dbHelper.getAllItems() // Hämta aktuella varor från databasen
         itemsAdapter.setItems(currentItems) // Antag att setItems är en metod i ItemsAdapter
     }
-
 }
