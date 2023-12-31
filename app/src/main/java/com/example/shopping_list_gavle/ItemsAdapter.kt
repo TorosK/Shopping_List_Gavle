@@ -37,9 +37,11 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener, var enableI
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
-        holder.nameTextView.text = "Namn -> ${item.name}"
-        holder.categoryTextView.text = "Kategori -> ${item.category}"
-        holder.dateTimeTextView.text = "Datum -> ${item.datetimeAdded}"
+        val context = holder.itemView.context
+
+        holder.nameTextView.text = context.getString(R.string.item_name_label, item.name)
+        holder.categoryTextView.text = context.getString(R.string.item_category_label, item.category)
+        holder.dateTimeTextView.text = context.getString(R.string.item_datetime_label, item.datetimeAdded)
 
         val backgroundColorId = when (listType) {
             ListType.DEFAULT -> R.color.defaultListBackground

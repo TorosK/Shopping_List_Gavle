@@ -1,5 +1,25 @@
 <!-- strings.xml -->
 <resources>
+    <!-- DatabaseHelper.kt -->
+    <string name="database_name">shoppingList.db</string>
+    <string name="table_items">items</string>
+    <string name="table_deleted">deleted</string>
+    <string name="table_purchased">purchased</string>
+
+    <!-- ItemsAdapter.kt -->
+    <string name="item_name_label">Namn -> %1$s</string>
+    <string name="item_category_label">Kategori -> %1$s</string>
+    <string name="item_datetime_label">Datum -> %1$s</string>
+
+    <!-- ItemsAdapter.kt -->
+    <string name="item_added_success">Varan har lagts till framgångsrikt</string>
+    <string name="error_adding_item">Error när varan skulle läggas till</string>
+    <string name="empty_item_name_error">Varans namn kan inte vara tomt</string>
+    <string name="item_action_dialog_title">Åtgärd för vara:</string>
+    <string name="mark_as_purchased">Markera som köpt</string>
+    <string name="delete">Radera</string>
+    <string name="cancel">Avbryt</string>
+
     <string name="app_name">Shopping List Gävle</string>
     <string name="item_name">Ange vara</string>
     <string name="add_item">Lägg till vara</string>

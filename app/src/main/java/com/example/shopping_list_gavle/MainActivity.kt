@@ -70,14 +70,14 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
 
                 val itemId = dbHelper.addItem(item)
                 if (itemId > -1) {
-                    Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.item_added_success), Toast.LENGTH_SHORT).show()
                     // Update RecyclerView with the latest items
                     updateRecyclerView()
                 } else {
-                    Toast.makeText(this, "Error adding item", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_adding_item), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                etItemName.error = "Varans namn kan inte vara tomt"
+                etItemName.error = getString(R.string.empty_item_name_error)
             }
         }
 
@@ -144,22 +144,19 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
 
     private fun showItemActionDialog(item: Item) {
         val builder = AlertDialog.Builder(this)
-
-        // Set the title and message of the AlertDialog
-        builder.setTitle("Åtgärd för vara:")
+        builder.setTitle(getString(R.string.item_action_dialog_title))
         val message = "Namn -> ${item.name}\nKategori -> ${item.category}\nDatum -> ${item.datetimeAdded}"
         builder.setMessage(message)
 
-        // Set the buttons for the AlertDialog
-        builder.setPositiveButton("Markera som köpt") { dialog, which ->
+        builder.setPositiveButton(getString(R.string.mark_as_purchased)) { dialog, which ->
             markItemAsPurchased(item)
         }
 
-        builder.setNegativeButton("Radera") { dialog, which ->
+        builder.setNegativeButton(getString(R.string.delete)) { dialog, which ->
             deleteItem(item)
         }
 
-        builder.setNeutralButton("Avbryt", null)
+        builder.setNeutralButton(getString(R.string.cancel), null)
 
         val dialog = builder.create()
         dialog.show()

@@ -8,14 +8,16 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    SQLiteOpenHelper(context, context.getString(R.string.database_name), null, DATABASE_VERSION) {
 
-        companion object {
-        private const val DATABASE_NAME = "shoppingList.db"
+    // Flyttade konstantvärden från companion object till klassnivå
+    private val DATABASE_NAME = context.getString(R.string.database_name)
+    private val TABLE_ITEMS = context.getString(R.string.table_items)
+    private val TABLE_DELETED = context.getString(R.string.table_deleted)
+    private val TABLE_PURCHASED = context.getString(R.string.table_purchased)
+
+    companion object {
         private const val DATABASE_VERSION = 1
-        private const val TABLE_ITEMS = "items"
-        private const val TABLE_DELETED = "deleted"
-        private const val TABLE_PURCHASED = "purchased"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
