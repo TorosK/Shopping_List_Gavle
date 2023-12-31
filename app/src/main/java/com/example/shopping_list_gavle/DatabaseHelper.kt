@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    companion object {
+        companion object {
         private const val DATABASE_NAME = "shoppingList.db"
         private const val DATABASE_VERSION = 1
         private const val TABLE_ITEMS = "items"
@@ -77,27 +77,27 @@ class DatabaseHelper(context: Context) :
         }
     }
 
-    fun deleteItem(itemId: Int) {
+    fun deleteItem(item: Item) {
         val db = writableDatabase
         // Flytta först item till "deleted" tabellen
         db.execSQL("""
-            INSERT INTO $TABLE_DELETED (item_id, name, category)
-            SELECT id, name, category FROM $TABLE_ITEMS WHERE id = $itemId;
-        """)
+        INSERT INTO $TABLE_DELETED (item_id, name, category)
+        VALUES (${item.id}, '${item.name}', '${item.category}');
+    """)
         // Ta bort item från "items" tabellen
-        db.delete(TABLE_ITEMS, "id = ?", arrayOf(itemId.toString()))
+        db.delete(TABLE_ITEMS, "id = ?", arrayOf(item.id.toString()))
         db.close()
     }
 
-    fun purchaseItem(itemId: Int) {
+    fun purchaseItem(item: Item) {
         val db = writableDatabase
         // Flytta först item till "purchased" tabellen
         db.execSQL("""
-            INSERT INTO $TABLE_PURCHASED (item_id, name, category)
-            SELECT id, name, category FROM $TABLE_ITEMS WHERE id = $itemId;
-        """)
+        INSERT INTO $TABLE_PURCHASED (item_id, name, category)
+        VALUES (${item.id}, '${item.name}', '${item.category}');
+    """)
         // Ta bort item från "items" tabellen
-        db.delete(TABLE_ITEMS, "id = ?", arrayOf(itemId.toString()))
+        db.delete(TABLE_ITEMS, "id = ?", arrayOf(item.id.toString()))
         db.close()
     }
 
@@ -165,27 +165,27 @@ class DatabaseHelper(context: Context) :
         return purchasedItemList
     }
 
-    fun restoreDeletedItem(deletedItemId: Int) {
+    fun restoreDeletedItem(deletedItem: DeletedItem) {
         val db = writableDatabase
         // Återställ item från "deleted" tabellen till "items" tabellen
         db.execSQL("""
-        INSERT INTO $TABLE_ITEMS (name, category)
-        SELECT name, category FROM $TABLE_DELETED WHERE id = $deletedItemId;
+        INSERT INTO $TABLE_ITEMS (id, name, category)
+        SELECT item_id, name, category FROM $TABLE_DELETED WHERE id = ${deletedItem.id};
     """)
         // Ta bort item från "deleted" tabellen
-        db.delete(TABLE_DELETED, "id = ?", arrayOf(deletedItemId.toString()))
+        db.delete(TABLE_DELETED, "id = ?", arrayOf(deletedItem.id.toString()))
         db.close()
     }
 
-    fun restorePurchasedItem(purchasedItemId: Int) {
+    fun restorePurchasedItem(purchasedItem: PurchasedItem) {
         val db = writableDatabase
         // Återställ item från "purchased" tabellen till "items" tabellen
         db.execSQL("""
-        INSERT INTO $TABLE_ITEMS (name, category)
-        SELECT name, category FROM $TABLE_PURCHASED WHERE id = $purchasedItemId;
+        INSERT INTO $TABLE_ITEMS (id, name, category)
+        SELECT item_id, name, category FROM $TABLE_PURCHASED WHERE id = ${purchasedItem.id};
     """)
         // Ta bort item från "purchased" tabellen
-        db.delete(TABLE_PURCHASED, "id = ?", arrayOf(purchasedItemId.toString()))
+        db.delete(TABLE_PURCHASED, "id = ?", arrayOf(purchasedItem.id.toString()))
         db.close()
     }
 }

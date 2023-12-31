@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter(private val itemClickListener: ItemClickListener) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+
     private val items = mutableListOf<Item>()
 
     var onItemClick: ((Item) -> Unit)? = null
@@ -28,13 +29,17 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
         return ItemViewHolder(view)
     }
 
+    interface ItemClickListener {
+        fun onItemClick(item: Item)
+    }
+
     // Byter innehållet i en vy
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
         holder.nameTextView.text = item.name
         holder.categoryTextView.text = item.category
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(item)
+            itemClickListener.onItemClick(items[position])
         }
     }
 

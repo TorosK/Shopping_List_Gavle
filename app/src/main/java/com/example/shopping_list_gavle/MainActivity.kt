@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
@@ -18,7 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Date
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
     private lateinit var itemsAdapter: ItemsAdapter
     private lateinit var dbHelper: DatabaseHelper
 
@@ -37,8 +39,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize DatabaseHelper
         dbHelper = DatabaseHelper(this)
 
-        // Initialize the RecyclerView adapter
-        itemsAdapter = ItemsAdapter()
+        itemsAdapter = ItemsAdapter(this)
 
         // Setup RecyclerView and Adapter
         val rvItems = findViewById<RecyclerView>(R.id.rvItems)
@@ -142,7 +143,50 @@ class MainActivity : AppCompatActivity() {
 
     // Method to update RecyclerView with the latest items
     private fun updateRecyclerView() {
-        val currentItems = dbHelper.getAllItems() // Hämta aktuella varor från databasen
-        itemsAdapter.setItems(currentItems) // Antag att setItems är en metod i ItemsAdapter
+        // Resetting the flags to ensure default list is shown
+        showingDeletedItems = false
+        showingPurchasedItems = false
+
+        val items = dbHelper.getAllItems()
+        itemsAdapter.setItems(items)
+    }
+
+    override fun onItemClick(item: Item) {
+        // Show a dialog or menu here to let the user mark the item as purchased or delete it
+        // Example:
+        showItemActionDialog(item)
+    }
+
+    private fun showItemActionDialog(item: Item) {
+        val builder = AlertDialog.Builder(this)
+
+        // Set the title and message of the AlertDialog
+        builder.setTitle("Åtgärd för vara:")
+        val message = "Namn -> ${item.name}\nKategori -> ${item.category}\nDatum -> ${item.datetimeAdded}"
+        builder.setMessage(message)
+
+        // Set the buttons for the AlertDialog
+        builder.setPositiveButton("Markera som köpt") { dialog, which ->
+            markItemAsPurchased(item)
+        }
+
+        builder.setNegativeButton("Radera") { dialog, which ->
+            deleteItem(item)
+        }
+
+        builder.setNeutralButton("Avbryt", null)
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun markItemAsPurchased(item: Item) {
+        dbHelper.purchaseItem(item) // Pass the entire item object
+        updateRecyclerView()
+    }
+
+    private fun deleteItem(item: Item) {
+        dbHelper.deleteItem(item) // Pass the entire item object
+        updateRecyclerView()
     }
 }
