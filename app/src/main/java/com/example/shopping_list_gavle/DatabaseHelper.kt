@@ -7,21 +7,21 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+// Define the DatabaseHelper class which extends SQLiteOpenHelper, providing database operations
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, context.getString(R.string.database_name), null, DATABASE_VERSION) {
 
-    // Flyttade konstantvärden från companion object till klassnivå
-    private val DATABASE_NAME = context.getString(R.string.database_name)
+    // Define database name and table names as constants, retrieved from strings.xml
     private val TABLE_ITEMS = context.getString(R.string.table_items)
     private val TABLE_DELETED = context.getString(R.string.table_deleted)
     private val TABLE_PURCHASED = context.getString(R.string.table_purchased)
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 1  // Set the database version
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // SQL-skript för att skapa tabeller
+        // SQL statements to create 'items', 'deleted', and 'purchased' tables
         db.execSQL("""
             CREATE TABLE items (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,62 +53,63 @@ class DatabaseHelper(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Handle database upgrades, e.g., adding new columns or tables
         if (oldVersion < 2) {
-            // Example: Add a new column to the items table
             db.execSQL("ALTER TABLE $TABLE_ITEMS ADD COLUMN new_column TEXT")
         }
-        // Handle other version upgrades
+        // Additional upgrade logic can be added here
     }
 
-    // CRUD-metoder nedan
-
+    // Method to add a new item to the 'items' table
     fun addItem(item: Item): Long {
         return try {
             val db = writableDatabase
             val values = ContentValues().apply {
                 put("name", item.name)
                 put("category", item.category)
-                // datetime_added sätts automatiskt till nuvarande tidsstämpel
-                // Add other fields ?
             }
+            // Insert the item and return the new row ID, or -1 if failed
             val id = db.insert(TABLE_ITEMS, null, values)
             db.close()
             id
         } catch (e: Exception) {
-            -1 // Indicate failure
+            -1 // Return -1 to indicate failure
         }
     }
 
+    // Method to move an item from 'items' to 'deleted' table
     fun deleteItem(item: Item) {
         val db = writableDatabase
-        // Flytta först item till "deleted" tabellen
+        // Insert item into 'deleted' and remove from 'items'
         db.execSQL("""
-        INSERT INTO $TABLE_DELETED (item_id, name, category)
-        VALUES (${item.id}, '${item.name}', '${item.category}');
-    """)
-        // Ta bort item från "items" tabellen
+            INSERT INTO $TABLE_DELETED (item_id, name, category)
+            VALUES (${item.id}, '${item.name}', '${item.category}');
+        """)
         db.delete(TABLE_ITEMS, "id = ?", arrayOf(item.id.toString()))
         db.close()
     }
 
+    // Method to move an item from 'items' to 'purchased' table
     fun purchaseItem(item: Item) {
         val db = writableDatabase
-        // Flytta först item till "purchased" tabellen
+        // Insert item into 'purchased' and remove from 'items'
         db.execSQL("""
-        INSERT INTO $TABLE_PURCHASED (item_id, name, category)
-        VALUES (${item.id}, '${item.name}', '${item.category}');
-    """)
-        // Ta bort item från "items" tabellen
+            INSERT INTO $TABLE_PURCHASED (item_id, name, category)
+            VALUES (${item.id}, '${item.name}', '${item.category}');
+        """)
         db.delete(TABLE_ITEMS, "id = ?", arrayOf(item.id.toString()))
         db.close()
     }
 
+    // Method to retrieve all items from 'items' table
     fun getAllItems(): List<Item> {
         val itemList = mutableListOf<Item>()
         val db = readableDatabase
+        // Query to select all items, sorted by datetime_added
         val cursor = db.query(TABLE_ITEMS, arrayOf("id", "name", "category", "datetime_added"), null, null, null, null, "datetime_added DESC")
         if (cursor.moveToFirst()) {
             do {
+                // Construct Item objects and add to the list
                 val item = Item(
                     cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("name")),
@@ -123,7 +124,9 @@ class DatabaseHelper(context: Context) :
         return itemList
     }
 
+    // Method to retrieve all deleted items
     fun getDeletedItems(): List<DeletedItem> {
+        // Similar implementation as getAllItems, but for 'deleted' table
         val deletedItemList = mutableListOf<DeletedItem>()
         val db = readableDatabase
         val cursor = db.query(TABLE_DELETED, arrayOf("id", "item_id", "name", "category", "datetime_deleted"), null, null, null, null, "datetime_deleted DESC")
@@ -145,7 +148,9 @@ class DatabaseHelper(context: Context) :
         return deletedItemList
     }
 
+    // Method to retrieve all purchased items
     fun getPurchasedItems(): List<PurchasedItem> {
+        // Similar implementation as getAllItems, but for 'purchased' table
         val purchasedItemList = mutableListOf<PurchasedItem>()
         val db = readableDatabase
         val cursor = db.query(TABLE_PURCHASED, arrayOf("id", "item_id", "name", "category", "datetime_purchased"), null, null, null, null, "datetime_purchased DESC")
@@ -167,9 +172,11 @@ class DatabaseHelper(context: Context) :
         return purchasedItemList
     }
 
+    // Method to restore an item from 'deleted' to 'items' table
+    // NOT IMPLEMENTED YET
     fun restoreDeletedItem(deletedItem: DeletedItem) {
         val db = writableDatabase
-        // Återställ item från "deleted" tabellen till "items" tabellen
+        // Insert the item back into 'items' and remove from 'deleted'
         db.execSQL("""
         INSERT INTO $TABLE_ITEMS (id, name, category)
         SELECT item_id, name, category FROM $TABLE_DELETED WHERE id = ${deletedItem.id};
@@ -179,7 +186,10 @@ class DatabaseHelper(context: Context) :
         db.close()
     }
 
+    // Method to restore an item from 'purchased' to 'items' table
+    // NOT IMPLEMENTED YET
     fun restorePurchasedItem(purchasedItem: PurchasedItem) {
+        // Similar implementation as restoreDeletedItem, but for 'purchased' table
         val db = writableDatabase
         // Återställ item från "purchased" tabellen till "items" tabellen
         db.execSQL("""
