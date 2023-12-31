@@ -2,6 +2,7 @@
 
 package com.example.shopping_list_gavle
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,39 +56,20 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener, var enableI
         } else {
             holder.itemView.setOnClickListener(null)
         }
+
+        // Loggning för felsökning (valfritt)
+        Log.d("ItemsAdapter", "Binder vy för position $position med listType $listType")
     }
 
     // Returnerar storleken på din dataset (invoked by the layout manager)
     override fun getItemCount() = items.size
 
-    // Metod för att lägga till varor i listan
-    fun addItem(item: Item) {
-        items.add(item) // Lägg till item i listan
-        notifyItemInserted(items.size - 1)
-    }
-
-    // Metod för att visa borttagna varor
-    fun showDeletedItems(deletedItems: List<DeletedItem>) {
-        listType = ListType.DELETED
-        items.clear() // Rensa befintliga varor
-        items.addAll(deletedItems.map { it.toItem() }) // Lägg till nya varor
-        notifyDataSetChanged() // Meddela att datan har ändrats
-    }
-
-    // Metod för att visa köpta varor
-    fun showPurchasedItems(purchasedItems: List<PurchasedItem>) {
-        listType = ListType.PURCHASED
-        items.clear() // Rensa befintliga varor
-        items.addAll(purchasedItems.map { it.toItem() }) // Lägg till nya varor
-        notifyDataSetChanged() // Meddela att datan har ändrats
-    }
-
-    // Metod för att uppdatera listan med varor
-    fun setItems(newItems: List<Item>) {
-        listType = ListType.DEFAULT
-        items.clear()           // Rensa befintliga varor
-        items.addAll(newItems)  // Lägg till nya varor
-        notifyDataSetChanged()  // Meddela att datan har ändrats
+    // Method to update the list with items and set the list type
+    fun setItems(newItems: List<Item>, listType: ListType) {
+        this.listType = listType
+        items.clear()           // Clear existing items
+        items.addAll(newItems)  // Add new items
+        notifyDataSetChanged()  // Notify that data has changed
     }
 
     override fun getItemViewType(position: Int): Int {

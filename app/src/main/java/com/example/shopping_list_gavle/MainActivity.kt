@@ -46,13 +46,29 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         // Load existing items from the database for the default list
         val existingItems = dbHelper.getAllItems()
         itemsAdapter.enableItemClick = true
-        itemsAdapter.setItems(existingItems)
+        itemsAdapter.setItems(existingItems, ItemsAdapter.ListType.DEFAULT) // Updated call
 
         // UI-komponenter
         val etItemName = findViewById<EditText>(R.id.etItemName)
         val spCategory = findViewById<Spinner>(R.id.spCategory)
+
         val btnShowDeletedItems = findViewById<Button>(R.id.btnShowDeletedItems)
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
+
+        // Show Purchased Items Button Listener
+        btnShowPurchasedItems.setOnClickListener {
+            if (showingPurchasedItems) {
+                updateRecyclerView() // Switch back to default list
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.btn_default) // Reset button appearance
+                showingPurchasedItems = false
+            } else {
+                val purchasedItems = dbHelper.getPurchasedItems() // Fetch purchased items
+                itemsAdapter.enableItemClick = false // Disable item clicks for purchased list
+                itemsAdapter.setItems(existingItems, ItemsAdapter.ListType.DEFAULT)
+                showingPurchasedItems = true
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
+            }
+        }
 
         // Example categories - modify as needed
         val categories = arrayOf("Övrigt", "Mat", "Kläder", "Elektronik")
@@ -85,6 +101,7 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         spCategory.adapter = spinnerAdapter
 
         // Show Deleted Items Button Listener
+        /*
         btnShowDeletedItems.setOnClickListener {
             if (showingDeletedItems) {
                 updateRecyclerView() // Switch back to default list
@@ -113,6 +130,29 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
                 btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
             }
         }
+         */
+
+        btnShowDeletedItems.setOnClickListener {
+            if (showingDeletedItems) {
+                updateRecyclerView() // Switch back to default list
+                showingDeletedItems = false
+            } else {
+                val deletedItems = dbHelper.getDeletedItems() // Fetch deleted items
+                itemsAdapter.setItems(deletedItems.map { it.toItem() }, ItemsAdapter.ListType.DELETED)
+                showingDeletedItems = true
+            }
+        }
+
+        btnShowPurchasedItems.setOnClickListener {
+            if (showingPurchasedItems) {
+                updateRecyclerView() // Switch back to default list
+                showingPurchasedItems = false
+            } else {
+                val purchasedItems = dbHelper.getPurchasedItems() // Fetch purchased items
+                itemsAdapter.setItems(purchasedItems.map { it.toItem() }, ItemsAdapter.ListType.PURCHASED)
+                showingPurchasedItems = true
+            }
+        }
 
         etItemName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -132,8 +172,7 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
     // Method to update RecyclerView with the latest items
     private fun updateRecyclerView() {
         val items = dbHelper.getAllItems()
-        itemsAdapter.enableItemClick = true // Enable item clicks for default list
-        itemsAdapter.setItems(items)
+        itemsAdapter.setItems(items, ItemsAdapter.ListType.DEFAULT)
     }
 
     override fun onItemClick(item: Item) {
@@ -173,24 +212,5 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
     private fun deleteItem(item: Item) {
         dbHelper.deleteItem(item) // Pass the entire item object
         updateRecyclerView()
-    }
-
-    // Metod för att visa raderade varor
-    private fun showDefaultItems() {
-        val items = dbHelper.getAllItems()
-        itemsAdapter.listType = ItemsAdapter.ListType.DEFAULT
-        itemsAdapter.setItems(items)
-    }
-
-    private fun showDeletedItems() {
-        val deletedItems = dbHelper.getDeletedItems()
-        itemsAdapter.listType = ItemsAdapter.ListType.DELETED
-        itemsAdapter.showDeletedItems(deletedItems)
-    }
-
-    private fun showPurchasedItems() {
-        val purchasedItems = dbHelper.getPurchasedItems()
-        itemsAdapter.listType = ItemsAdapter.ListType.PURCHASED
-        itemsAdapter.showPurchasedItems(purchasedItems)
     }
 }
