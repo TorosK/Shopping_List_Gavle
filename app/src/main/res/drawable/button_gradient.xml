@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AndroidStudioProjects\Shopping_List_Gavle\app\src\main\res\drawable
+\button_gradient.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Shadow Layer -->
+<item>
+    <shape android:shape="rectangle">
+        <solid android:color="#88000000"/> <!-- Shadow color -->
+        <corners android:radius="8dp"/>
+    </shape>
+</item>
+<!-- Background with Border -->
+<item android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp">
+    <shape android:shape="rectangle">
+        <gradient
+            android:startColor="#FFA500"
+            android:endColor="#5B9F0C"
+            android:angle="45"/>
+        <corners android:radius="8dp"/>
+        <stroke android:width="2dp" android:color="#800080"/> <!-- Purple border -->
+    </shape>
+</item>
+</layer-list>
