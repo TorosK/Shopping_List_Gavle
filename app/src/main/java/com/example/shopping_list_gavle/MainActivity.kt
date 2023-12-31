@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
 
         // Example categories - modify as needed
-        val categories = arrayOf("Mat", "Kläder", "Elektronik", "Övrigt")
+        val categories = arrayOf("Övrigt", "Mat", "Kläder", "Elektronik")
 
         // Setup Add Item Button
         val btnAddItem = findViewById<Button>(R.id.btnAddItem)

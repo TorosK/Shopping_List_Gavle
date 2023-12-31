@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class ItemsAdapter(private val itemClickListener: ItemClickListener, var enableItemClick: Boolean = true) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
@@ -38,6 +39,14 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener, var enableI
         holder.nameTextView.text = "Namn -> ${item.name}"
         holder.categoryTextView.text = "Kategori -> ${item.category}"
         holder.dateTimeTextView.text = "Datum -> ${item.datetimeAdded}"
+
+        val backgroundColorId = when (listType) {
+            ListType.DEFAULT -> R.color.defaultListBackground
+            ListType.DELETED -> R.color.deletedItemsBackground
+            ListType.PURCHASED -> R.color.purchasedItemsBackground
+        }
+        val backgroundColor = ContextCompat.getColor(holder.itemView.context, backgroundColorId)
+        holder.itemView.setBackgroundColor(backgroundColor)
 
         if (enableItemClick) {
             holder.itemView.setOnClickListener {
