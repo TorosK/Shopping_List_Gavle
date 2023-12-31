@@ -55,8 +55,13 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         val btnShowDeletedItems = findViewById<Button>(R.id.btnShowDeletedItems)
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
 
-        // Example categories - modify as needed
-        val categories = arrayOf("Övrigt", "Mat", "Kläder", "Elektronik")
+        // Example categories
+        val categories = arrayOf(
+            getString(R.string.category_miscellaneous),
+            getString(R.string.category_food),
+            getString(R.string.category_clothes),
+            getString(R.string.category_electronics)
+        )
 
         // Setup Add Item Button
         val btnAddItem = findViewById<Button>(R.id.btnAddItem)
@@ -145,7 +150,13 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
     private fun showItemActionDialog(item: Item) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.item_action_dialog_title))
-        val message = "Namn -> ${item.name}\nKategori -> ${item.category}\nDatum -> ${item.datetimeAdded}"
+
+        val message = getString(
+            R.string.item_details_message,
+            item.name,
+            item.category,
+            item.datetimeAdded
+        )
         builder.setMessage(message)
 
         builder.setPositiveButton(getString(R.string.mark_as_purchased)) { dialog, which ->

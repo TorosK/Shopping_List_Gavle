@@ -11,7 +11,7 @@
     <string name="item_category_label">Kategori -> %1$s</string>
     <string name="item_datetime_label">Datum -> %1$s</string>
 
-    <!-- ItemsAdapter.kt -->
+    <!-- MainActivity.kt -->
     <string name="item_added_success">Varan har lagts till framgångsrikt</string>
     <string name="error_adding_item">Error när varan skulle läggas till</string>
     <string name="empty_item_name_error">Varans namn kan inte vara tomt</string>
@@ -19,6 +19,11 @@
     <string name="mark_as_purchased">Markera som köpt</string>
     <string name="delete">Radera</string>
     <string name="cancel">Avbryt</string>
+    <string name="category_miscellaneous">Övrigt</string>
+    <string name="category_food">Mat</string>
+    <string name="category_clothes">Kläder</string>
+    <string name="category_electronics">Elektronik</string>
+    <string name="item_details_message">Namn -&gt; %1$s\nKategori -&gt; %2$s\nDatum -&gt; %3$s</string>
 
     <string name="app_name">Shopping List Gävle</string>
     <string name="item_name">Ange vara</string>
