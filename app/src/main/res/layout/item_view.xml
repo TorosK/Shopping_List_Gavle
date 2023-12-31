@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- AndroidStudioProjects\Shopping_List_Gavle\app\src\main\res\xml\item_view.xml -->
+<!-- Layout for individual items displayed in a RecyclerView -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- TextView to display the name of the item -->
     <TextView
         android:id="@+id/tvItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
+    <!-- TextView to display the category of the item -->
     <TextView
         android:id="@+id/tvItemCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
+    <!-- TextView to display the date and time when the item was added, deleted, or purchased -->
     <TextView
         android:id="@+id/tvItemDateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 </LinearLayout>
-

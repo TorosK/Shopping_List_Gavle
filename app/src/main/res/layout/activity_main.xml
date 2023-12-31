@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- AndroidStudioProjects\Shopping_List_Gavle\app\src\main\res\xml\activity_main.xml -->
+<!-- Main layout for the MainActivity -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -7,25 +8,25 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- EditText for Item Name -->
+    <!-- EditText for entering the name of the item -->
     <EditText
         android:id="@+id/etItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/item_name" />
 
-    <!-- Space element for adding empty space -->
+    <!-- Spacer for visual separation -->
     <Space
         android:layout_width="match_parent"
-        android:layout_height="24dp" /> <!-- Adjust the height as needed -->
+        android:layout_height="24dp" />
 
-    <!-- Horizontal LinearLayout for Label and Spinner -->
+    <!-- Container for Category label and Spinner -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Text Label for Category -->
+        <!-- TextView for the Category label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_gravity="center_vertical"
             android:padding="8dp" />
 
-        <!-- Spinner for Category Selection -->
+        <!-- Spinner (Dropdown list) for selecting the item's category -->
         <Spinner
             android:id="@+id/spCategory"
             android:layout_width="0dp"
@@ -49,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="24dp" /> <!-- Adjust the height as needed -->
 
+    <!-- Button for adding a new item -->
     <Button
         android:id="@+id/btnAddItem"
         android:background="@drawable/button_gradient"
@@ -64,7 +66,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- Knappar för att visa borttagna och köpta varor -->
+    <!-- Buttons for showing deleted and purchased items -->
     <Button
         android:id="@+id/btnShowDeletedItems"
         android:background="@drawable/button_gradient"
@@ -81,18 +83,17 @@
         android:layout_height="wrap_content"
         android:text="@string/show_purchased_items" />
 
-    <!-- RecyclerViews för att visa borttagna och köpta varor -->
-    <!-- Dessa kan vara dolda eller visas i separata aktiviteter eller fragment beroende på ditt användargränssnittsdesign -->
+    <!-- Additional RecyclerViews for showing deleted and purchased items, initially hidden -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDeletedItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" /> <!-- Exempel: dold tills användaren klickar på 'btnShowDeletedItems' -->
+        android:visibility="gone" /> <!-- dold tills användaren klickar på 'btnShowDeletedItems' -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPurchasedItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" /> <!-- Exempel: dold tills användaren klickar på 'btnShowPurchasedItems' -->
+        android:visibility="gone" /> <!-- dold tills användaren klickar på 'btnShowPurchasedItems' -->
 
 </LinearLayout>

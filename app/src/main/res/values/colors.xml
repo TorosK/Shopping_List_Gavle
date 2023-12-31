@@ -15,6 +15,6 @@
     <color name="navigationBarColor">#1CC623</color>
     <color name="statusBarColor">#6200EE</color>
     <color name="defaultListBackground">#F47474</color>
-    <color name="deletedItemsBackground">#FFC0CB</color> <!-- Ljusrosa bakgrund för deleted items list -->
-    <color name="purchasedItemsBackground">#90EE90</color> <!-- Ljusgrön bakgrund för purchased items list -->
+    <color name="deletedItemsBackground">#FFC0CB</color>
+    <color name="purchasedItemsBackground">#90EE90</color>
 </resources>
