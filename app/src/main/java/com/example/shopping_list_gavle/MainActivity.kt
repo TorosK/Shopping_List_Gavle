@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         rvItems.layoutManager = LinearLayoutManager(this)
         rvItems.adapter = itemsAdapter
 
+        // Load existing items from the database and populate RecyclerView
+        val existingItems = dbHelper.getAllItems()
+        itemsAdapter.setItems(existingItems)
+
         // UI-komponenter
         val etItemName = findViewById<EditText>(R.id.etItemName)
         val spCategory = findViewById<Spinner>(R.id.spCategory)
