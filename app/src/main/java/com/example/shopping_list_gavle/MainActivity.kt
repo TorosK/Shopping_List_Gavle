@@ -56,8 +56,9 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         val btnShowPurchasedItems = findViewById<Button>(R.id.btnShowPurchasedItems)
 
         // Show Purchased Items Button Listener
+        /*
         btnShowPurchasedItems.setOnClickListener {
-            if (showingPurchasedItems) {
+                     if (showingPurchasedItems) {
                 updateRecyclerView() // Switch back to default list
                 btnShowPurchasedItems.setBackgroundResource(android.R.drawable.btn_default) // Reset button appearance
                 showingPurchasedItems = false
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
                 btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
             }
         }
+        */
 
         // Example categories - modify as needed
         val categories = arrayOf("Övrigt", "Mat", "Kläder", "Elektronik")
@@ -100,8 +102,6 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCategory.adapter = spinnerAdapter
 
-        // Show Deleted Items Button Listener
-        /*
         btnShowDeletedItems.setOnClickListener {
             if (showingDeletedItems) {
                 updateRecyclerView() // Switch back to default list
@@ -109,14 +109,12 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
                 showingDeletedItems = false
             } else {
                 val deletedItems = dbHelper.getDeletedItems() // Fetch deleted items
-                itemsAdapter.enableItemClick = false // Disable item clicks for deleted list
-                itemsAdapter.setItems(deletedItems.map { it.toItem() })
-                showingDeletedItems = true
+                itemsAdapter.setItems(deletedItems.map { it.toItem() }, ItemsAdapter.ListType.DELETED)
                 btnShowDeletedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
+                showingDeletedItems = true
             }
         }
 
-        // Show Purchased Items Button Listener
         btnShowPurchasedItems.setOnClickListener {
             if (showingPurchasedItems) {
                 updateRecyclerView() // Switch back to default list
@@ -124,32 +122,8 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
                 showingPurchasedItems = false
             } else {
                 val purchasedItems = dbHelper.getPurchasedItems() // Fetch purchased items
-                itemsAdapter.enableItemClick = false // Disable item clicks for purchased list
-                itemsAdapter.setItems(purchasedItems.map { it.toItem() })
-                showingPurchasedItems = true
-                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
-            }
-        }
-         */
-
-        btnShowDeletedItems.setOnClickListener {
-            if (showingDeletedItems) {
-                updateRecyclerView() // Switch back to default list
-                showingDeletedItems = false
-            } else {
-                val deletedItems = dbHelper.getDeletedItems() // Fetch deleted items
-                itemsAdapter.setItems(deletedItems.map { it.toItem() }, ItemsAdapter.ListType.DELETED)
-                showingDeletedItems = true
-            }
-        }
-
-        btnShowPurchasedItems.setOnClickListener {
-            if (showingPurchasedItems) {
-                updateRecyclerView() // Switch back to default list
-                showingPurchasedItems = false
-            } else {
-                val purchasedItems = dbHelper.getPurchasedItems() // Fetch purchased items
                 itemsAdapter.setItems(purchasedItems.map { it.toItem() }, ItemsAdapter.ListType.PURCHASED)
+                btnShowPurchasedItems.setBackgroundResource(android.R.drawable.button_onoff_indicator_on) // Change button appearance
                 showingPurchasedItems = true
             }
         }
