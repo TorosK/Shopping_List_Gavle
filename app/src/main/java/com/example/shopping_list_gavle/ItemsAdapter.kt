@@ -13,14 +13,14 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener) : RecyclerV
 
     private val items = mutableListOf<Item>()
 
-    var onItemClick: ((Item) -> Unit)? = null
-
     // ViewHolder för varje vara i listan
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.tvItemName)
         val categoryTextView: TextView = view.findViewById(R.id.tvItemCategory)
-        // Lägg till fler Views här om nödvändigt
+        val dateTimeTextView: TextView = view.findViewById(R.id.tvItemDateTime) // Ny TextView för datum/tid
     }
+
+    var onItemClick: ((Item) -> Unit)? = null
 
     // Skapar nya Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -38,6 +38,7 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener) : RecyclerV
         val item = items[position]
         holder.nameTextView.text = item.name
         holder.categoryTextView.text = item.category
+        holder.dateTimeTextView.text = item.datetimeAdded // Binder datum/tid till TextView
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(items[position])
         }
