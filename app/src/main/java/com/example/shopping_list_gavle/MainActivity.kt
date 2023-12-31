@@ -142,9 +142,9 @@ class MainActivity : AppCompatActivity(), ItemsAdapter.ItemClickListener {
     }
 
     override fun onItemClick(item: Item) {
-        // Show a dialog or menu here to let the user mark the item as purchased or delete it
-        // Example:
-        showItemActionDialog(item)
+        if (itemsAdapter.listType == ItemsAdapter.ListType.DEFAULT) {
+            showItemActionDialog(item)
+        }
     }
 
     private fun showItemActionDialog(item: Item) {

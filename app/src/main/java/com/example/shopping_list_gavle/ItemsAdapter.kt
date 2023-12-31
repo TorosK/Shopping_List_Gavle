@@ -51,7 +51,8 @@ class ItemsAdapter(private val itemClickListener: ItemClickListener, var enableI
         val backgroundColor = ContextCompat.getColor(holder.itemView.context, backgroundColorId)
         holder.itemView.setBackgroundColor(backgroundColor)
 
-        if (enableItemClick) {
+        // Set click listener only for default list items
+        if (listType == ListType.DEFAULT && enableItemClick) {
             holder.itemView.setOnClickListener {
                 itemClickListener.onItemClick(item)
             }
